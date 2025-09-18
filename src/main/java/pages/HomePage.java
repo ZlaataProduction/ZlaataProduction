@@ -2,9 +2,11 @@ package pages;
 
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.TimeoutException;
 import java.time.Duration;
 import org.junit.Assert;
@@ -64,7 +66,7 @@ public final class HomePage extends HomePageObjRepo {
 
 	public void bannerClick() {
 		homeLaunch();
-		Common.waitForElement(5);
+		Common.waitForElement(10);
 		click(banners);
 		//		WebElement bannerRedirection = driver.findElement(By.xpath("//h3[@class='prod_list_topic']"));
 		//		if (bannerRedirection.isDisplayed()) {
@@ -205,55 +207,47 @@ public final class HomePage extends HomePageObjRepo {
 	}
 
 
-//	public void showMore() {
-//		homeLaunch();
-//		Actions action = new Actions(driver);
-//		Common.waitForElement(2);
-//		((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 2300);");
-//		Common.waitForElement(2);
-//		action.moveToElement(showMore).click().build().perform();
-//		WebElement showMorePage = driver.findElement(By.xpath("//h3[@class='prod_list_topic']"));
-//		if (showMorePage.isDisplayed()) {
-//			String pageHeading = showMorePage.getText();
-//			System.out.println("Show More button Redirected sucessfull: " +pageHeading);
-//			Assert.assertTrue(verifyDisplayed(showMorePage));
-//
-//
-//		}
-//
-//	}
-	
-	public void newArrivalArrows() {
-	    homeLaunch(); // Open home page
+	public void seeMore() {
+		homeLaunch();
+		Actions action = new Actions(driver);
+		Common.waitForElement(2);
+        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 2700);");
+		Common.waitForElement(2);
+		action.moveToElement(seeMore).click().build().perform();
+		WebElement seeMorePage = driver.findElement(By.xpath("//h3[@class='prod_list_topic']"));
+		if (seeMorePage.isDisplayed()) {
+			String pageHeading = seeMorePage.getText();
+			System.out.println("See More button Redirected sucessfull: " +pageHeading);
+			Assert.assertTrue(verifyDisplayed(seeMorePage));
+
+
+		}
+
+	}
+	public void newArrivalArrows() throws TimeoutException {
+	    homeLaunch();
+	    Actions action = new Actions(driver);
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
-	    // Locators
-	    By heading = By.xpath("//h2[text()='New Arrivals']");
-	    By forwardBtn = By.xpath("//h2[text()='New Arrivals']/following::div[contains(@class,'swiper-button-next')][1]");
-	    By backwardBtn = By.xpath("//h2[text()='New Arrivals']/following::div[contains(@class,'swiper-button-prev')][1]");
-
 	    try {
-	        // Scroll the New Arrivals heading to the middle of the viewport
-	        WebElement headingElement = wait.until(ExpectedConditions.visibilityOfElementLocated(heading));
-	        ((JavascriptExecutor) driver).executeScript(
-	                "arguments[0].scrollIntoView({block: 'center', inline: 'nearest'});", headingElement);
-	        Common.waitForElement(2); // Small wait for lazy-loaded content
-
-	        // Click the forward arrow
-	        WebElement forwardButton = wait.until(ExpectedConditions.visibilityOfElementLocated(forwardBtn));
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", forwardButton);
-	        System.out.println("✅ New Arrival forward button clicked.");
+	        ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 2500);");
 	        Common.waitForElement(2);
 
-	        // Click the backward arrow
-	        WebElement backwardButton = wait.until(ExpectedConditions.visibilityOfElementLocated(backwardBtn));
-	        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", backwardButton);
-	        System.out.println("✅ New Arrival backward button clicked.");
-	        Common.waitForElement(2);
+	        // Wait for and click the forward button
+	        WebElement forwardButton = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	                By.xpath("//*[@class='swiper-button-next new_arrival_swiper_next']")));
+	        action.moveToElement(forwardButton).click().perform();
+	        System.out.println("New Arrival forward button clicked.");
+
+	        // Wait for and click the backward button
+	        WebElement backwardButton = wait.until(ExpectedConditions.visibilityOfElementLocated(
+	                By.xpath("//*[@class='swiper-button-prev new_arrival_swiper_prev']")));
+	        action.moveToElement(backwardButton).click().perform();
+	        System.out.println("New Arrival backward button clicked.");
 
 	    } catch (Exception e) {
-	        System.out.println("❌ Caught an exception: " + e.getMessage());
-	        NoSuchElementException e1 = new NoSuchElementException("A NoSuchElementException occurred in New Arrivals arrows");
+	        System.out.println("Caught an exception in New Arrival: " + e.getMessage());
+	        NoSuchElementException e1 = new NoSuchElementException("A NoSuchElementException occurred in New Arrival");
 	        e1.initCause(e);
 	        throw e1;
 	    }
@@ -264,7 +258,7 @@ public final class HomePage extends HomePageObjRepo {
 		((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 2700);");
 		try {
 
-			List<WebElement> clickRandomProduct = driver.findElements(By.xpath("//div[@class='new_arrival_card_list ']")); 
+			List<WebElement> clickRandomProduct = driver.findElements(By.xpath("//div[@class='products_contents']")); 
 			if (clickRandomProduct.isEmpty()) {
 				System.out.println("No products found in New arrivals section.");
 				return;
@@ -348,7 +342,7 @@ public final class HomePage extends HomePageObjRepo {
 			WebElement inspiredByRedirection = driver.findElement(By.xpath("//div[@class='prod_main_details_head']"));
 			if (inspiredByRedirection.isDisplayed()) {
 				String details = inspiredByRedirection.getText();
-				System.out.println("Inspired by Redirected sucessfull: " +details);
+				System.out.println("Inspired by Redirecte	d sucessfull: " +details);
 				Assert.assertTrue(verifyDisplayed(inspiredByRedirection));
 
 			}
@@ -533,58 +527,51 @@ public final class HomePage extends HomePageObjRepo {
 	//
 	//	}
 	public void featureOn() {
+	    homeLaunch();
+	    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 3700);");
+//	    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -400);");
+	    Common.waitForElement(2);
 
-		homeLaunch();
-		((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 7000);");
+	    try {
+	        // pick a random feature card
+	        List<WebElement> featureCards = driver.findElements(By.xpath("//div[@class='featured__slider__main']//div[@class='swiper-slide']"));
+	        if (featureCards.isEmpty()) {
+	            System.out.println("No Feature On section found.");
+	            return;
+	        }
 
-		try {
+	        WebElement randomFeature = featureCards.get(0);
+	        randomFeature.click();   // ✅ simple click
+	        Common.waitForElement(5);
 
-			List<WebElement> clickRandomFeatureOn = driver.findElements(By.xpath("//div[@class='featured__slider__main']//div[@class='swiper-slide']"));
-			if (clickRandomFeatureOn.isEmpty()) {
-				System.out.println("No Feature on section found. ");
-				return;
-			}
+	        // check redirection
+	        List<WebElement> redirectedHeading = driver.findElements(By.xpath("//h3[@class='prod_list_topic']"));
+	        if (!redirectedHeading.isEmpty() && redirectedHeading.get(0).isDisplayed()) {
+	            System.out.println("Feature On Redirected successfully: " + redirectedHeading.get(0).getText());
+	            Assert.assertTrue(verifyDisplayed(redirectedHeading.get(0)));
+	        } else {
+	            List<WebElement> feature = driver.findElements(By.xpath("//h2[contains(text(),'Feature On')]"));
+	            if (!feature.isEmpty() && feature.get(0).isDisplayed()) {
+	                System.out.println("Feature On redirected on the same page: " + feature.get(0).getText());
+	                Assert.assertTrue(verifyDisplayed(feature.get(0)));
+	            }
 
-			Collections.shuffle(clickRandomFeatureOn);
-			WebElement randomFeature = clickRandomFeatureOn.get(0);
-			clickUsingJavaScript(randomFeature);
-			Common.waitForElement(5);
+	            // forward arrow
+	            WebElement nextBtn = driver.findElement(By.xpath("//*[@class='swiper-button-next featured_next_btn']"));
+	            nextBtn.click();
+	            System.out.println("Feature On Next Button clicked");
 
-			List<WebElement> featureOnRedirection = driver.findElements(By.xpath("//h3[@class='prod_list_topic']"));
-			if (!featureOnRedirection.isEmpty() && featureOnRedirection.get(0).isDisplayed()) {
-				String pageHeading = featureOnRedirection.get(0).getText();
-				System.out.println("Feature On Redirected successfully: " + pageHeading);
-				Assert.assertTrue(verifyDisplayed(featureOnRedirection.get(0)));
-			}
-			else {
-				List<WebElement> feature = driver.findElements(By.xpath("//h2[contains(text(),'Feature On')]"));
-				if (!feature.isEmpty() && feature.get(0).isDisplayed()) {
-					String featureOn = feature.get(0).getText();
-					System.out.println("The feature on redirecting on the same page: " + featureOn);
-					Assert.assertTrue(verifyDisplayed(feature.get(0)));
-				} else {
-					System.out.println("Neither of the expected pages were found.");
-				}
-
-				WebElement featureOnNxtBtn = driver.findElement(By.xpath("//*[@class='swiper-button-next featured_next_btn']"));
-				if (featureOnNxtBtn.isDisplayed()) {
-					clickUsingJavaScript(featureOnNxtBtn);
-					System.out.println("Feature on Next Button clicked");	
-				}
-				WebElement featureOnBackBtn = driver.findElement(By.xpath("//*[@class='swiper-button-prev featured_prev_btn']"));
-				if (featureOnBackBtn.isDisplayed()) {
-					clickUsingJavaScript(featureOnBackBtn);
-					System.out.println("Feature on Back Button clicked");
-
-				}
-			}
-		}
-
-		catch (Exception e) {
-			System.out.println("Exception in featureOn: " + e.getMessage());
-			throw e;
-		}
+	            // backward arrow
+	            WebElement backBtn = driver.findElement(By.xpath("//*[@class='swiper-button-prev featured_prev_btn']"));
+	            backBtn.click();
+	            System.out.println("Feature On Back Button clicked");
+	        }
+	    } catch (Exception e) {
+	        System.out.println("Exception in featureOn: " + e.getMessage());
+	        throw e;
+	    }
 	}
+
 
 
 
@@ -613,10 +600,141 @@ public final class HomePage extends HomePageObjRepo {
 		}
 
 
+	}
+	
+	public void logoDisplay() {
+	    homeLaunch();  // Launch the Home Page
 
+	    if (logo.isDisplayed()) {
+	        System.out.println("✅ Logo is displayed on the Home Page.");
+
+	        // Click the logo
+	        logo.click();
+
+	        // Wait for navigation after click
+	        Common.waitForElement(3);
+
+	        // Get current URL
+	        String currentUrl = driver.getCurrentUrl();
+	        System.out.println("🌐 Current URL after clicking logo: " + currentUrl);
+
+	        // Expected URL
+	        String expectedUrl = "https://www.zlaata.com/";
+
+	        // Verify URL
+	        if (currentUrl.equals(expectedUrl)) {
+	            System.out.println("✅ URL validation passed. Logo redirects to: " + expectedUrl);
+	        } else {
+	            System.out.println("❌ URL validation failed. Expected: " + expectedUrl + " but got: " + currentUrl);
+	        }
+
+	    } else {
+	        System.out.println("❌ Logo is NOT displayed on the Home Page.");
+	    }
+	}
+
+ 
+ public void threadBanner() {
+	    homeLaunch();  // Launch the Home Page
+	    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 2700);");
+
+	    if (threadBanner.isDisplayed()) {
+	        System.out.println("✅ Thread banner is displayed on the Home Page.");
+	        threadBanner.click();
+
+	        // Wait for navigation after click
+	        Common.waitForElement(3);
+
+	        // Get current URL
+	        String currentUrl = driver.getCurrentUrl();
+	        System.out.println("🌐 Navigated to URL after clicking Thread banner: " + currentUrl);
+
+	        // Expected URL
+	        String expectedUrl = "https://www.zlaata.com/threads";
+
+	        // Validation
+	        if (currentUrl.equals(expectedUrl)) {
+	            System.out.println("✅ URL validation passed. Current URL matches expected URL: " + expectedUrl);
+	        } else {
+	            System.out.println("❌ URL validation failed. Expected: " + expectedUrl + " but got: " + currentUrl);
+	        }
+
+	    } else {
+	        System.out.println("❌ Thread banner is NOT displayed on the Home Page.");
+	    }
 	}
 
 
+ public void categorySection() {
+	 homeLaunch();  // Launch Home Page
+
+	    // Scroll to category section
+	    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, 1400);"); 
+	    Common.waitForElement(5);
+
+	    // Track printed categories to avoid duplicates
+	    Set<String> printedCategories = new HashSet<>();
+
+	    // Locate category cards (first load)
+	    List<WebElement> categories = driver.findElements(
+	        By.xpath("//div[contains(@class,'outfit_cards_list_box') and contains(@class,'swiper-slide')]")
+	    );
+
+	    System.out.println("📌 Found " + categories.size() + " categories on first load.");
+
+	    // Print and verify unique categories
+	    for (WebElement category : categories) {
+	        String text = category.getText().trim();
+	        if (!text.isEmpty() && printedCategories.add(text)) {
+	            System.out.println("✅ Category: " + text);
+	        }
+	    }
+
+	    // Click arrow if more categories are available
+	    try {
+	        WebElement nextArrow = driver.findElement(By.xpath("//*[@class='swiper-button-next outfits_swiper_next']"));
+	        if (nextArrow.isDisplayed()) {
+	            nextArrow.click();
+	            Common.waitForElement(2);
+	            System.out.println("👉 Clicked the right arrow to see more categories.");
+
+	            List<WebElement> moreCategories = driver.findElements(
+	                By.xpath("//div[contains(@class,'outfit_cards_list_box') and contains(@class,'swiper-slide')]")
+	            );
+
+	            for (WebElement cat : moreCategories) {
+	                String text = cat.getText().trim();
+	                if (!text.isEmpty() && printedCategories.add(text)) {
+	                    System.out.println("📌 More Category: " + text);
+	                }
+	            }
+	        }
+	    } catch (Exception e) {
+	        System.out.println("⚠️ Next arrow not found or not clickable.");
+	    }
+ }
+ 
+  public void verifyMonsoonBanner() {
+		    homeLaunch();
+
+		    if (monsoonBanner.isDisplayed()) {
+		        System.out.println("✅ Monsoon Banner is displayed on the Home Page.");
+
+		        // Click on banner
+		        monsoonBanner.click();
+
+		        // Wait for navigation and print redirected URL
+		        String redirectedUrl = driver.getCurrentUrl();
+		        System.out.println("🔗 Redirected to URL: " + redirectedUrl);
+
+		    } else {
+		        System.out.println("❌ Monsoon Banner is NOT displayed on the Home Page.");
+		    }
+		}
+
+
+	    
+	  
 
 	public  void RandomMailId() {
 		// Step 1: Generate a random email

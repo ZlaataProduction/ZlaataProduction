@@ -221,4 +221,10 @@ public abstract class AddressPageObjRepo extends BasePage {
 	
 	@FindBy(xpath = "//div[@class='address_card Cls_addr_data_section']")
 	protected WebElement totalAddressCount;
+	
+	@FindBy(xpath = "//a[@class='account_sidebar_user_profile_link']")
+	protected WebElement MyprofileIconButton;
+	
+	@FindBy(id ="mobileNumber")
+	protected WebElement accountsettingMobileNumber;
 }

@@ -89,9 +89,9 @@ Feature: This is HomePage feature
       | TD_UI_Zlaata_Home_08 |
       
        @TC_UI_Zlaata_Home_09
-  Scenario Outline: TC_UI_Zlaata_Home_09 |Verify if the user is able to click on images in the "Inspired By" section.|"<TD_ID>"
+  Scenario Outline: TC_UI_Zlaata_Home_09 |Verify if the user is able to click on  See More button on New Arrival Sectioin.|"<TD_ID>"
      
-     Given User clicks on inspired by images
+     Given User clicks on See More button .
     
 
     Examples: 
@@ -139,3 +139,44 @@ Feature: This is HomePage feature
     Examples: 
       | TD_ID                  |
       | TD_UI_Zlaata_Home_13 |
+      
+      
+   @TC_UI_Zlaata_Home_14
+Scenario Outline: TC_UI_Zlaata_Home_14 |Verify that the Home Page logo is displayed| "<TD_ID>"
+
+  Given the user verifies that the logo is available on the Home Page
+
+Examples:
+  | TD_ID                  |
+  | TD_UI_Zlaata_Home_14   |
+  
+       
+ @TC_UI_Zlaata_Home_15
+Scenario Outline: TC_UI_Zlaata_Home_15 |Verify that the Home Page Thread banner is available| "<TD_ID>"
+
+  Given the user verifies that the Thread banner is available on the Home Page
+
+Examples:
+  | TD_ID                  |
+  | TD_UI_Zlaata_Home_15   |
+ 
+  
+ @TC_UI_Zlaata_Home_16
+Scenario Outline: TC_UI_Zlaata_Home_16 |Verify that the Category section is available| "<TD_ID>"
+
+  Given the user verifies that the Category section is available on the Home Page
+
+Examples:
+  | TD_ID                  |
+  | TD_UI_Zlaata_Home_16   |
+ 
+  @TC_UI_Zlaata_Home_17
+Scenario Outline: TC_UI_Zlaata_Home_17 |Verify that the Monsoon Banner is available| "<TD_ID>"
+
+  Given the user verifies that the Monsoon Banner section is available on the Home Page
+
+Examples:
+  | TD_ID                |
+  | TD_UI_Zlaata_Home_17 |
+  
+ 

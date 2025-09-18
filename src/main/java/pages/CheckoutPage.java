@@ -1,5 +1,6 @@
 package pages;
 
+import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementClickInterceptedException;
 import org.openqa.selenium.JavascriptExecutor;
@@ -861,6 +862,7 @@ public final class CheckoutPage extends CheckOutPageObjRepo{
 
 
 	public void verifyItemCountChanges() throws InterruptedException {
+		
 		LoginPage login = new LoginPage(driver);
 		login.userLogin();
 		Common.waitForElement(5);
@@ -932,34 +934,34 @@ public final class CheckoutPage extends CheckOutPageObjRepo{
 	    ((JavascriptExecutor) driver).executeScript("window.scrollBy(0, -400);");
 	    Common.waitForElement(2);
 
-	    CheckoutPage checkout = new CheckoutPage(driver);
+//	    CheckoutPage checkout = new CheckoutPage(driver);
 	    WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 	    Actions actions = new Actions(driver);
 	    JavascriptExecutor js = (JavascriptExecutor) driver;
 
 	    // ================== Accessories ==================
-	    wait.until(ExpectedConditions.elementToBeClickable(checkout.accessoriesButton));
-	    checkout.accessoriesButton.click();
+	    wait.until(ExpectedConditions.elementToBeClickable(accessoriesButton));
+	    accessoriesButton.click();
 	    System.out.println("✅ Accessories clicked (default selected)");
 	    Common.waitForElement(1);
 
-	    clickForwardBackwardArrow(checkout.accessoriesButtonForwardArrow, checkout.accessoriesButtonBackwardArrow, "Accessories", wait, js, actions);
+	    clickForwardBackwardArrow(accessoriesButtonForwardArrow, accessoriesButtonBackwardArrow, "Accessories", wait, js, actions);
 
 	    // ================== Recently Viewed ==================
-	    wait.until(ExpectedConditions.elementToBeClickable(checkout.recentlyViewed));
-	    checkout.recentlyViewed.click();
+	    wait.until(ExpectedConditions.elementToBeClickable(recentlyViewed));
+	    recentlyViewed.click();
 	    System.out.println("✅ Recently Viewed clicked");
 	    Common.waitForElement(1);
 
-	    clickForwardBackwardArrow(checkout.recentlyViewedForwardArrow, checkout.recentlyViewedBackwardArrow, "Recently Viewed", wait, js, actions);
+	    clickForwardBackwardArrow(recentlyViewedForwardArrow, recentlyViewedBackwardArrow, "Recently Viewed", wait, js, actions);
 
 	    // ================== Top Selling ==================
-	    wait.until(ExpectedConditions.elementToBeClickable(checkout.topSelling));
-	    checkout.topSelling.click();
+	    wait.until(ExpectedConditions.elementToBeClickable(topSelling));
+	    topSelling.click();
 	    System.out.println("✅ Top Selling clicked");
 	    Common.waitForElement(1);
 
-	    clickForwardBackwardArrow(checkout.topSellingForwardArrow, checkout.topSellingBackwardArrow, "Top Selling", wait, js, actions);
+	    clickForwardBackwardArrow(topSellingForwardArrow, topSellingBackwardArrow, "Top Selling", wait, js, actions);
 	}
 
 	/**
@@ -990,8 +992,155 @@ public final class CheckoutPage extends CheckOutPageObjRepo{
 	        System.out.println("ℹ️ " + section + " arrows not available → Products less.");
 	    }
 	}
+	
+	
+	public void enterInvalidGiftCardNumberCheckValidationMessage() {
 
-		  
+	    HomePage home = new HomePage(driver);
+	    home.homeLaunch();
+
+	    ProductDetailsPage pDP = new ProductDetailsPage(driver);
+	    Common.waitForElement(5);
+
+	    // Perform Buy Now
+	    pDP.buyNow(Hooks.getScenario());
+
+	    // Click on Use a Gift Card option
+	    click(clickOnUseAGiftCardOption);
+
+	    // Enter invalid gift card number from test data
+	    String excelData = Common.getValueFromTestDataMap("gift card");
+	    type(giftCardTextBox, excelData);
+
+	    // Click Apply button
+	    click(giftCardApplyButton);
+
+	    Common.waitForElement(2);
+
+	    // Get the validation message
+	    String actualMessage = giftCardInvalidValidationMessage.getText();
+
+	    // Print the validation message in console
+	    System.out.println("Gift Card Validation Message: " + actualMessage);
+
+	    // Assert the validation message
+	    String expectedMessage = "Invalid card number"; // replace with actual expected message
+	    Assert.assertEquals("Validation message mismatch!", expectedMessage, actualMessage);
+	}
+
+	
+	public void verifyMandatoryFieldsInGiftWrapPopup() {
+
+	    // Launch Home Page
+	    HomePage home = new HomePage(driver);
+	    home.homeLaunch();
+
+	    // Navigate to Product Details Page
+	    ProductDetailsPage pDP = new ProductDetailsPage(driver);
+	    Common.waitForElement(5);
+
+	    // Perform Buy Now
+	    pDP.buyNow(Hooks.getScenario());
+
+	    // Open Gift Wrapping popup
+	    click(clickOnGiftWRAPPINGPopup);
+
+	    // Attempt to submit without entering mandatory fields
+	    click(giftWrappingSubmitButton);
+
+	    // Get the validation message for Recipient Name
+	    String actualMessage = recipientNameValidationMessage.getText();
+
+	    // Print the validation message in console
+	    System.out.println("Gift Wrapping Popup Recipient Textbox Validation: " + actualMessage);
+
+	    // Assert the validation message
+	    String expectedMessage = "Recipient name should be between 3 and 50 characters."; // use actual expected message
+	    Assert.assertEquals("Validation message mismatch!", expectedMessage, actualMessage);
+	}
+
+	public void verifyLessCharacterFieldsInGiftWrapPopup() {
+
+	    // Launch Home Page
+	    HomePage home = new HomePage(driver);
+	    home.homeLaunch();
+
+	    // Navigate to Product Details Page
+	    ProductDetailsPage pDP = new ProductDetailsPage(driver);
+	    Common.waitForElement(5);
+
+	    // Perform Buy Now
+	    pDP.buyNow(Hooks.getScenario());
+
+	    // Open Gift Wrapping popup
+	    click(clickOnGiftWRAPPINGPopup);
+
+	    // Enter less characters in mandatory fields
+	    String recipientData = Common.getValueFromTestDataMap("Recipient");
+	    type(enterrecipientName, recipientData);
+
+	    String descriptionData = Common.getValueFromTestDataMap("Description");
+	    type(enterdesName, descriptionData);
+
+	    String senderData = Common.getValueFromTestDataMap("Sender");
+	    type(entersenderName, senderData);
+
+	    // Submit the Gift Wrapping popup
+	    click(giftWrappingSubmitButton);
+
+	    // Get actual validation messages
+	    String actualRecipientMessage = recipientNameValidationMessage.getText();
+	    String actualDescriptionMessage = giftWrapPopupDescriptionTextBox.getText();
+	    String actualSenderMessage = senderNameValidationMessage.getText();
+
+	    // Print validation messages in console
+	    System.out.println("Recipient Name Validation: " + actualRecipientMessage);
+	    System.out.println("Description Validation: " + actualDescriptionMessage);
+	    System.out.println("Sender Name Validation: " + actualSenderMessage);
+
+	    // Assert validation messages
+	    String expectedRecipientMessage = "Recipient name should be between 3 and 50 characters.";
+	    String expectedDescriptionMessage = "Message should be between 3 and 2000 characters.";
+	    String expectedSenderMessage = "Sender name should be between 3 and 50 characters.";
+
+	    Assert.assertEquals("Recipient name validation mismatch!", expectedRecipientMessage, actualRecipientMessage);
+	    Assert.assertEquals("Description validation mismatch!", expectedDescriptionMessage, actualDescriptionMessage);
+	    Assert.assertEquals("Sender name validation mismatch!", expectedSenderMessage, actualSenderMessage);
+	}
+
+	public void entervalidGiftCardNumberCheckGiftCardAmount() {
+		
+
+	    HomePage home = new HomePage(driver);
+	    home.homeLaunch();
+
+	    ProductDetailsPage pDP = new ProductDetailsPage(driver);
+	    Common.waitForElement(5);
+
+	    // Perform Buy Now
+	    pDP.buyNow(Hooks.getScenario());
+
+	    // Click on Use a Gift Card option
+	    click(clickOnUseAGiftCardOption);
+	    
+	    String excelData = Common.getValueFromTestDataMap("Valid Gift card Number");
+	    type(giftCardTextBox, excelData);
+	    
+	    click(giftCardApplyButton);
+
+	    Common.waitForElement(2);
+	    
+	    
+	    String actualMessage = giftcardBalance.getText();
+
+	    // Print the validation message in console
+	    System.out.println("Gift Card balance amount  " + actualMessage);
+	    
+		
+
+	}
+	
+	
 		   boolean isBagEmpty() {
 		return driver.findElements(By.xpath("//span[@class='checkout_prod_count Cls_checkout_prod_count']")).isEmpty();
 	}

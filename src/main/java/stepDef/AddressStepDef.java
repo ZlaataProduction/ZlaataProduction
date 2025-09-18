@@ -95,8 +95,15 @@ public class AddressStepDef {
 
 
 
+	@Given("User opens the address page")
+	public void user_opens_the_address_page() {
+		login.userLogin();
+		address.phoneNumberverfiyOnAddressPage();
+	}
 
 
+
+//
 
 
 

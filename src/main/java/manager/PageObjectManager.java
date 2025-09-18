@@ -26,8 +26,7 @@ public class PageObjectManager {
     private FooterPage footer;
     private ProductDetailsPage pDP;
     private SearchSectionPage search;
-    private CouponPage coupon;
-    private AdminPanelPage admin;
+//    private CouponPage coupon;
    
 
     public PageObjectManager(WebDriver driver) {
@@ -98,15 +97,13 @@ public class PageObjectManager {
         return (order == null) ? order = new OrdersPage(driver) : order;
     
 	}
-	public CouponPage getCouponPage() {
-        return (coupon == null) ? coupon = new CouponPage(driver) : coupon;
-    
-	}
+//	public CouponPage getCouponPage() {
+//        return (coupon == null) ? coupon = new CouponPage(driver) : coupon;
+//    
+//	}
 	
-	public AdminPanelPage getAdminPanelPage() {
-        return (admin == null) ? admin = new AdminPanelPage(driver) : admin;
-    
-	}
+
+	
 	
 	
 }

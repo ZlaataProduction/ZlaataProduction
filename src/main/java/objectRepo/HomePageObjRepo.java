@@ -58,8 +58,8 @@ public abstract class HomePageObjRepo extends BasePage {
 	@FindBy(xpath = "//div[@class='carousel_cta']")
 	protected WebElement pause;
 	
-	@FindBy(xpath = "//a[@class='new_arrival_show_more_btn btn___2']")
-	protected WebElement showMore;
+	@FindBy(xpath = "//a[@class='seeMore__btn']")
+	protected WebElement seeMore;
 	
 	@FindBy(xpath = "//div[@class='products_img']")
 	protected WebElement productImage;
@@ -152,6 +152,17 @@ public abstract class HomePageObjRepo extends BasePage {
 	@FindBy(xpath = "//div[@class='outfit_cards_list swiper-wrapper']")
 	protected WebElement partySection;
 	
+	@FindBy(xpath = "//img[@alt='zlaata Logo']")
+	protected WebElement logo;
+	
+	@FindBy(xpath = "//img[@alt='Threads banner']")
+	protected WebElement threadBanner;
+	
+	@FindBy(xpath = "//div[contains(@class,'outfit_cards_list_box') and contains(@class,'swiper-slide')]")
+	protected WebElement category;
+	
+	@FindBy(xpath = "//a[@class='monsoon_banner_container mb-80']")
+	protected WebElement monsoonBanner;
 	
 	
 	
