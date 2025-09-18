@@ -209,6 +209,9 @@ public abstract class CheckOutPageObjRepo extends BasePage {
     
     @FindBy(xpath = "//p[@class='gift_card_box_input_balance ClsGCAvailableBalance']")
     protected WebElement giftcardBalance;
+    
+    @FindBy(xpath = "//p[@class='error__msg gift_card_error__msg active']")
+    protected WebElement invalidGiftcardNumber;
 
 
 

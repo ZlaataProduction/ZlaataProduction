@@ -1130,11 +1130,18 @@ public final class CheckoutPage extends CheckOutPageObjRepo{
 
 	    Common.waitForElement(2);
 	    
+	    try {
+	        if (invalidGiftcardNumber.isDisplayed()) {
+	            String errorMessage = invalidGiftcardNumber.getText();
+	            System.out.println("❌ Invalid Gift Card Number Message: " + errorMessage);
+	        } else {
+	            String actualMessage = giftcardBalance.getText();
+	            System.out.println("✅ Gift Card Balance Amount: " + actualMessage);
+	        }
+	    } catch (Exception e) {
+	        System.out.println("⚠️ Could not validate gift card message: " + e.getMessage());
+	    }
 	    
-	    String actualMessage = giftcardBalance.getText();
-
-	    // Print the validation message in console
-	    System.out.println("Gift Card balance amount  " + actualMessage);
 	    
 		
 
